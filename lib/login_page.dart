@@ -39,7 +39,7 @@ void validateAndSubmit() async{
         if(_formType == FormType.login) {
         FirebaseUser user = (await FirebaseAuth.instance
             .signInWithEmailAndPassword(
-            email: _email, password: _password)) as FirebaseUser;
+            email: _email, password: _password)).user;
         print('Signed in: ${user.uid}');
       }
         else {
@@ -107,9 +107,14 @@ void validateAndSubmit() async{
         new RaisedButton(
           child: new Text('Login', style: new TextStyle(fontSize: 20.0)),
           onPressed: validateAndSubmit,
+          color: Color.fromRGBO(30, 176, 254, 100),
+          shape: RoundedRectangleBorder(
+              borderRadius: new BorderRadius.circular(18.0),
+              side: BorderSide(color: Color.fromRGBO(30, 176, 254, 100))
+          )
         ),
         new FlatButton(
-          child: new Text('Create an account', style: new TextStyle(fontSize: 20.0)),
+          child: new Text('Create an account', style: new TextStyle(fontSize: 15.0)),
           onPressed: moveToRegister,
         )
       ];
@@ -119,9 +124,14 @@ void validateAndSubmit() async{
         new RaisedButton(
           child: new Text('Create an Account', style: new TextStyle(fontSize: 20.0)),
           onPressed: validateAndSubmit,
+          color: Color.fromRGBO(30, 176, 254, 100),
+          shape: RoundedRectangleBorder(
+              borderRadius: new BorderRadius.circular(18.0),
+              side: BorderSide(color: Color.fromRGBO(30, 176, 254, 100))
+          ),
         ),
         new FlatButton(
-          child: new Text('Have an account? Login', style: new TextStyle(fontSize: 20.0)),
+          child: new Text('Have an account? Login', style: new TextStyle(fontSize: 15.0)),
           onPressed: moveToLogin,
         )
       ];
