@@ -1,6 +1,6 @@
 import 'package:capstoneapp/auth.dart';
 import 'package:flutter/material.dart';
-import 'calenderpage.dart';
+import 'calendarpage.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({this.auth, this.onSignedOut});
@@ -41,7 +41,7 @@ class HomePage extends StatelessWidget {
                 onPressed:() {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => CalenderPage()),
+                    MaterialPageRoute(builder: (context) => CalendarPage()),
                   );
                 },
                 color: Colors.blue,

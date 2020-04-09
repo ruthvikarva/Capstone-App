@@ -1,14 +1,17 @@
-// calenderpage.dart
+// calendarpage.dart
 
 import 'package:flutter/material.dart';
+import 'package:table_calendar/table_calendar.dart';
 
-class CalenderPage extends StatelessWidget {
+class CalendarPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    CalendarController _controller;
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('Second Screen'),
+        title: Text('Meal Calendar'),
       ),
       body: Center(
         child: RaisedButton(
