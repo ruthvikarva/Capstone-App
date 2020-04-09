@@ -20,7 +20,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: new AppBar(
-        title: new Text('Recipe'),
+        title: new Text('Profile'),
         actions: <Widget>[
           new FlatButton(
               onPressed: _signOut,
