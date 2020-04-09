@@ -1,5 +1,6 @@
 import 'package:capstoneapp/auth.dart';
 import 'package:flutter/material.dart';
+import 'calenderpage.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({this.auth, this.onSignedOut});
@@ -30,7 +31,26 @@ class HomePage extends StatelessWidget {
       ),
       body: new Container(
         child: new Center(
-          child: new Text('Welcome', style: new TextStyle(fontSize: 32.0),)
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children:[
+              Text('Welcome', style: new TextStyle(fontSize: 32.0),),
+              //Calender Button
+              RaisedButton(
+                child: Text("Calender"),
+                onPressed:() {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => CalenderPage()),
+                  );
+                },
+                color: Colors.blue,
+                textColor: Colors.black,
+                padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                splashColor: Colors.grey,
+              )
+            ],
+          ),
         ),
       ),
     );
