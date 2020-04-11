@@ -1,4 +1,5 @@
 import 'package:capstoneapp/auth.dart';
+import 'package:capstoneapp/profile.dart';
 import 'package:flutter/material.dart';
 import 'calendarpage.dart';
 
@@ -48,7 +49,20 @@ class HomePage extends StatelessWidget {
                 textColor: Colors.black,
                 padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
                 splashColor: Colors.grey,
-              )
+              ),
+              RaisedButton(
+                child: Text("Profile"),
+                onPressed:() {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ProfilePage()),
+                  );
+                },
+                color: Colors.blue,
+                textColor: Colors.black,
+                padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                splashColor: Colors.grey,
+              ),
             ],
           ),
         ),
