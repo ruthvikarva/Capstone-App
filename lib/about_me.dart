@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'edit_info.dart';
 
 class AboutMe extends StatefulWidget{
   AboutMe({Key key}): super(key: key);
@@ -11,42 +11,16 @@ class AboutMe extends StatefulWidget{
 }
 
 class _AboutMe extends State<AboutMe> {
-  Map<String, bool> allergies={
-    "Egg": false,
-    "Milk": false,
-    "Peanut": false,
-    "Seafood" : false,
-    "Sesame" : false,
-    "Soy": false,
-    "Wheat": false
-  };
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: ListView(
         children: <Widget>[
-          /*
-          Container(
-            height: 500,
-            child:ListView(
-                children: allergies.keys.map((String key){
-                  return new CheckboxListTile(
-                      title: new Text(key),
-                      value: allergies[key],
-                      activeColor: Colors.redAccent,
-                      onChanged: (bool value){
-                        setState(() {
-                          allergies[key]=value;
-                        });
-                      });
-                }).toList()
-            ),
-          ),
-          */
           ExpansionTile(
             title: Text("Allergies"),
             children: <Widget>[
+
             ],
           ),
           ExpansionTile(
@@ -60,6 +34,23 @@ class _AboutMe extends State<AboutMe> {
               Text("Name:")
             ],
           ),
+          Center(
+            child: RaisedButton(
+              child: Text("Edit"),
+              color: Colors.redAccent,
+              shape: RoundedRectangleBorder(
+                borderRadius: new BorderRadius.circular(10),
+              ),
+
+              onPressed: (){
+                Navigator.push((context),
+                    MaterialPageRoute(
+                        builder: (context)=>EditInfo()
+                    )
+                );
+              },
+            ),
+          )
 
 
 

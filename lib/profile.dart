@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'about_me.dart';
-import 'edit_info.dart';
 
 class ProfilePage extends StatefulWidget{
   ProfilePage({Key key}): super(key: key);
@@ -15,18 +14,13 @@ class _ProfilePage extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text("Profile"),
+      ),
       body: ListView(
           children: <Widget>[
+
             Container(
-              decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                      colors: [
-                        Colors.red,
-                        Colors.deepOrange,
-                        Colors.orange,
-                      ]
-                  )
-              ),
               child:Padding(
                 padding: EdgeInsets.all(20.0) ,
                 child: Column(
@@ -62,13 +56,7 @@ class _ProfilePage extends State<ProfilePage> {
 
             Container(
               decoration: BoxDecoration(
-                gradient: LinearGradient(
-                    colors: [
-                      Colors.red,
-                      Colors.deepOrange,
-                      Colors.orange,
-                    ]
-                ),
+                color: Colors.black26,
               ),
               child:DefaultTabController(
                 length: 2,
@@ -82,7 +70,7 @@ class _ProfilePage extends State<ProfilePage> {
                       ],
                     ),
                     Container(
-                      height: 500,
+                      height: 350,
                       color: Colors.white,
                       child: TabBarView(
                         children: <Widget>[
@@ -99,21 +87,11 @@ class _ProfilePage extends State<ProfilePage> {
                 ),
               ),
             ),
-
           ]
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        icon: Icon(Icons.edit),
-        label: Text("Edit"),
-        backgroundColor: Colors.redAccent ,
-        onPressed: (){
-          Navigator.push(context,
-              MaterialPageRoute(
-                  builder: (context)=>EditInfo()
-              )
-          );
-        },
-      ),
+
     );
   }
 }
+
+
