@@ -1,7 +1,9 @@
 import 'package:capstoneapp/auth.dart';
 import 'package:capstoneapp/profile.dart';
+import 'package:capstoneapp/testingDB.dart';
 import 'package:flutter/material.dart';
 import 'calendarpage.dart';
+import 'pantry.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({this.auth, this.onSignedOut});
@@ -22,7 +24,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: new AppBar(
-        title: new Text('Profile'),
+        title: new Text('Recipe'),
         actions: <Widget>[
           new FlatButton(
               onPressed: _signOut,
@@ -52,17 +54,30 @@ class HomePage extends StatelessWidget {
               ),
               RaisedButton(
                 child: Text("Profile"),
-                onPressed:() {
+                onPressed: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => ProfilePage()),
                   );
                 },
-                color: Colors.blue,
+                color: Colors.amber,
                 textColor: Colors.black,
                 padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
                 splashColor: Colors.grey,
               ),
+              RaisedButton(
+                child: Text("Pantry"),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => AddDataToFireStore()),
+                  );
+                },
+                color: Colors.lightGreenAccent,
+                textColor: Colors.black,
+                padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                splashColor: Colors.grey,
+              )
             ],
           ),
         ),

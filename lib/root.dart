@@ -1,7 +1,7 @@
 import 'package:capstoneapp/home.dart';
+//import 'package:capstoneapp/home2.dart';
 import 'package:flutter/material.dart';
 import 'login_page.dart';
-import 'home.dart';
 import 'auth.dart';
 
 class RootPage extends StatefulWidget{

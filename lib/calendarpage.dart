@@ -6,9 +6,9 @@ class CalendarPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Meal Calendar',
+      title: 'Meal History',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.red,
       ),
       home: MealCalendarPage(),
     );
