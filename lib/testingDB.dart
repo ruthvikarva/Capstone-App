@@ -104,7 +104,7 @@ class AddDataToFireStore extends StatelessWidget {
   }
 }
 
-/*
+
 someMethod() async {
   FirebaseUser user = await FirebaseAuth.instance.currentUser();
   String userId = user.uid;
@@ -112,11 +112,12 @@ someMethod() async {
   return userId;
 }
 
+/*
 Future<String> getUser() async {
   FirebaseUser user = await FirebaseAuth.instance.currentUser();
   String userId = user.uid;
   return userId;
-}*/
+}
 
 Future<Null> getData() async {
   FirebaseUser user = await FirebaseAuth.instance.currentUser();
@@ -124,7 +125,7 @@ Future<Null> getData() async {
   return userId;
 }
 
-/*
+
 class ingredientList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
