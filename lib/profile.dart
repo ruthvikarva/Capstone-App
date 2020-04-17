@@ -11,6 +11,7 @@ class ProfilePage extends StatefulWidget{
 }
 
 class _ProfilePage extends State<ProfilePage> {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,7 +20,6 @@ class _ProfilePage extends State<ProfilePage> {
       ),
       body: ListView(
           children: <Widget>[
-
             Container(
               child:Padding(
                 padding: EdgeInsets.all(20.0) ,
@@ -78,7 +78,6 @@ class _ProfilePage extends State<ProfilePage> {
                               child: AboutMe()
                           ),
                           Container(
-                            color: Colors.black,
                           )
                         ],
                       ),
@@ -92,6 +91,9 @@ class _ProfilePage extends State<ProfilePage> {
 
     );
   }
+
 }
+
+
 
 
