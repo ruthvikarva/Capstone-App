@@ -1,29 +1,31 @@
 import 'package:flutter/material.dart';
-import 'edit_info.dart';
+import 'profile_edit.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-
-
-class AboutMe extends StatefulWidget{
-  AboutMe({Key key}): super(key: key);
-
+class ProfileAboutMe extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() {
-    return _AboutMe();
-  }
+  _ProfileAboutMeState createState() => _ProfileAboutMeState();
 }
 
-class _AboutMe extends State<AboutMe> {
+class _ProfileAboutMeState extends State<ProfileAboutMe> {
   final db= Firestore.instance;
+  //Variables sent to the EDIT INFO screen---------------
   String id;
+  String name;
+  List<String> diet=new List(1); //will have to change to string also, we need calories
+  var allergy;
+  //-----------------------------------------------------
+  //Variabes used for streambuilder
   var allergies;
-  var diets;
+  var diets; //we need to add calories
   var userName;
 
   void initState(){
-    userid();
+    getUser();
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +35,7 @@ class _AboutMe extends State<AboutMe> {
           ExpansionTile(
             title: Text("Allergies"),
             children: <Widget>[
-             new StreamBuilder(
+              new StreamBuilder(
                 stream: Firestore.instance
                     .collection('users').document(id).snapshots(),
                 builder: (context, snapshot){
@@ -58,50 +60,8 @@ class _AboutMe extends State<AboutMe> {
                       ]
                   );
 
-
                 },
-             ),
-              /*
-              new FutureBuilder<String>(
-                future: _userDetails(), // async work
-                builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-                  List<Widget> children;
-                  if (snapshot.hasData) {
-                    children = <Widget>[
-                    Icon(
-                    Icons.check_circle_outline,
-                    color: Colors.green,
-                    size: 60,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 16),
-                      child: Text('Result: ${snapshot.data}'),
-                    )
-                  ];
-                }
-                  else {
-                    children = <Widget>[
-                      SizedBox(
-                        child: CircularProgressIndicator(),
-                        width: 60,
-                        height: 60,
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.only(top: 16),
-                        child: Text('Awaiting result...'),
-                      )
-                    ];
-                  }
-                  return Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: children,
-                      ),
-                    );
-                },
-              )
-              */
+              ),
             ],
           ),
           ExpansionTile(
@@ -113,23 +73,14 @@ class _AboutMe extends State<AboutMe> {
                 builder: (context, snapshot){
                   if(!snapshot.hasData) return Text('Loading data..');
                   var dietTest=snapshot.data['diet'];
-                  var len=snapshot.data['diet'].length;
-                  diets= new List(len);
-                  for(int i=0; i<len; i++){
-                    print('${dietTest[i]}');
-                    diets[i]=dietTest[i];
-                    print(diets[i]);
-                  }
+                  diets= new List(1);
+                  diets[0]=dietTest;
                   //var len=snapshot.data.documents[1]['allergies'].length;
                   //List<dynamic> m=snapshot.data.documents[1]['allergies'];
                   return Column(
-                    children: <Widget>[
-                      Text('Result: ${snapshot.data['diet']}'),
-                      //Text('${dietTest[0]}'),
-                      //Text(len.toString())
-                      //Text(len.toString()),
-                      //Text(m[0])
-                    ]
+                      children: <Widget>[
+                        Text('Result: ${snapshot.data['diet']}'),
+                      ]
                   );
 
 
@@ -175,11 +126,11 @@ class _AboutMe extends State<AboutMe> {
               onPressed: (){
                 Navigator.push((context),
                     MaterialPageRoute(
-                        builder: (context)=>EditInfo(
-                          userid: id,
-                          curName: userName,
-                          curAllergies: allergies,
-                          curDiets: diets
+                        builder: (context)=>ProfileEdit(
+                            userid: id,
+                            curName: name,
+                            curAllergies: allergy,
+                            curDiets: diet
                         )
                     )
                 );
@@ -194,39 +145,28 @@ class _AboutMe extends State<AboutMe> {
   }
 
 
-  void userid() async {
+  void getUser() async {
     final FirebaseUser user = await FirebaseAuth.instance.currentUser();
+    id=user.uid;
     setState(() {
       id=user.uid;
     });
+    Firestore.instance.collection('users').document(id).get().then((DocumentSnapshot document){
+      print("document_build:$document");
+      setState(() {
+        name=document.data['name'].toString();
+        diet[0]=document.data['diet'].toString(); //diet will have to change from an array to a string
+        allergy=document.data['allergies'];
+      });
+      print(name);
+      print(diet);
+      print(allergy);
+    });
+
   }
 
 }
 
-/*
-Future<String> _userDetails() async {
-  final FirebaseUser user = await FirebaseAuth.instance.currentUser();
-  final String uid = user.uid;
-  return uid;
-}
-*/
-Text allergies(){
-  StreamBuilder(
-    stream: Firestore.instance
-        .collection('users')
-        .snapshots(),
-    builder: (context, snapshot){
-      if(!snapshot.hasData) return Text('Loading data..');
 
-      return Column(
-        children: <Widget>[
-          Text('Result: ${snapshot.data.documents[3]['allergies']}')
-        ],
-      );
-    },
-  );
-
-
-}
 
 

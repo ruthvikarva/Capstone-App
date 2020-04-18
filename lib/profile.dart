@@ -1,5 +1,7 @@
+import 'package:capstoneapp/profile_aboutme.dart';
+import 'package:capstoneapp/profile_goals.dart';
 import 'package:flutter/material.dart';
-import 'about_me.dart';
+import 'profile_aboutme.dart';
 
 class ProfilePage extends StatefulWidget{
   ProfilePage({Key key}): super(key: key);
@@ -37,18 +39,18 @@ class _ProfilePage extends State<ProfilePage> {
                     ),
 
                     SizedBox(height: 8,),
-                    //*******************
+
                     Text("Red Tomato", style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold
                     ),
                     ),
-                    //******************
+
                     Text("Member since 2020", style: TextStyle(
                       fontSize: 14,
                     ),
                     ),
-                    //*****************
+
                   ],
                 ),
               ),
@@ -75,9 +77,10 @@ class _ProfilePage extends State<ProfilePage> {
                       child: TabBarView(
                         children: <Widget>[
                           Container(
-                              child: AboutMe()
+                              child: ProfileAboutMe()
                           ),
                           Container(
+                            child: ProfileGoals(),
                           )
                         ],
                       ),
