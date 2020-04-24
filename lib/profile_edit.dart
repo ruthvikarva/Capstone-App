@@ -1,3 +1,4 @@
+import 'package:capstoneapp/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -44,7 +45,7 @@ class _ProfileEditState extends State<ProfileEdit> {
     "Eggs": false,
     "Milk": false,
     "Peanuts": false,
-    "Seafood": false,
+    "Shellfish": false,
     "Soy": false,
     "Tree Nuts": false,
     "Wheat": false
@@ -162,7 +163,7 @@ class _ProfileEditState extends State<ProfileEdit> {
         FormBuilderFieldOption(value: "Eggs"),
         FormBuilderFieldOption(value: "Milk"),
         FormBuilderFieldOption(value: "Peanuts"),
-        FormBuilderFieldOption(value: "Seafood"),
+        FormBuilderFieldOption(value: "Shellfish"),
         FormBuilderFieldOption(value: "Soy"),
         FormBuilderFieldOption(value: "Tree Nuts"),
         FormBuilderFieldOption(value: "Wheat"),
@@ -177,6 +178,7 @@ class _ProfileEditState extends State<ProfileEdit> {
         for (int i=0; i<active.length; i++){
           print("SAVED---------------");
           print(active[i]);
+          print(active.runtimeType);
           newAllergies.add(active[i]);
         }
         allergyChange=true;
@@ -216,6 +218,10 @@ class _ProfileEditState extends State<ProfileEdit> {
                 SizedBox(height: 100,),
                 RaisedButton(
                   child: Text("Submit"),
+                  color: Colors.redAccent,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: new BorderRadius.circular(10),
+                  ),
                   onPressed: () {
                     if(_formKey.currentState.saveAndValidate()){
                       _formKey.currentState.value;
@@ -230,7 +236,11 @@ class _ProfileEditState extends State<ProfileEdit> {
                         updateAllergy({'allergies': newAllergies});
                       }
                       //WILL NEED TO CREATE AN IF STATEMENT FOR THE CALORIES
-
+                      Navigator.push(context,
+                         MaterialPageRoute(
+                           builder: (context)=> ProfilePage()
+                         )
+                      );
                     }
                   },
                 ),

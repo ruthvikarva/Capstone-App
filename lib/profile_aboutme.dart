@@ -23,12 +23,14 @@ class _ProfileAboutMeState extends State<ProfileAboutMe> {
 
   void initState(){
     getUser();
+    //test();
+    //getCollection();
   }
-
 
 
   @override
   Widget build(BuildContext context) {
+    print(id);
     return Scaffold(
       body: ListView(
         children: <Widget>[
@@ -112,7 +114,32 @@ class _ProfileAboutMeState extends State<ProfileAboutMe> {
 
 
                 },
+              ),
+
+              /*
+              new StreamBuilder(
+                stream: Firestore.instance
+                    .collection('recipe').document(id).snapshots(),
+                builder: (context, snapshot){
+                  if(!snapshot.hasData) return Text('Loading data..');
+                  userName=snapshot.data['name'];
+                  print(userName);
+
+                  //var len=snapshot.data.documents[1]['allergies'].length;
+                  //List<dynamic> m=snapshot.data.documents[1]['allergies'];
+                  return Column(
+                      children: <Widget>[
+                        Text('Result: ${snapshot.data['name']}'),
+                        //Text(userName),
+                        //Text(len.toString()),
+                        //Text(m[0])
+                      ]
+                  );
+                },
               )
+              */
+
+
             ],
           ),
           Center(
@@ -164,8 +191,92 @@ class _ProfileAboutMeState extends State<ProfileAboutMe> {
     });
 
   }
+/*
+  void test() async{
+    QuerySnapshot querySnapshot = await Firestore.instance.collection("recipe")
+        .where("calories", isLessThan: 666).getDocuments();
+    var list = querySnapshot.documents;
+    print("TEST--------");
+    var len=list.length;
+    var userList=['arugula', 'Balsamic vinegar', 'olive oil', 'lemon zest', 'Parmesan cheese','Pine nuts'];
+    for(int x=0; x<len; x++){
+      print(list[x].data['ingredientName']);
+      print(list[x].data['name']);
+      print(list[x].documentID);
+    }
 
+    FirebaseUser user = await FirebaseAuth.instance.currentUser();
+    String userId = user.uid;
+    QuerySnapshot qSnapshot = await Firestore.instance.collection("inventory")
+        .where("UserId", isEqualTo: userId).where("Name", isEqualTo: "Lime").getDocuments();
+    var ulist = querySnapshot.documents;
+    print("TEST--------------------");
+    print(userId);
+    print(ulist.runtimeType);
+    print(ulist);
+
+    //var map= list[].data['ingredientName'];
+  }
+
+    void getCollection() async{
+    FirebaseUser user = await FirebaseAuth.instance.currentUser();
+    String userId = user.uid;
+    List<DocumentSnapshot> templist;
+    List<dynamic> list = new List();
+    CollectionReference collectionRef = Firestore.instance.collection("inventory");
+    QuerySnapshot collectionSnapshot = await collectionRef.where("UserId", isEqualTo: userId).getDocuments();
+      QuerySnapshot querySnapshot = await Firestore.instance.collection("recipe")
+          .where("calories", isLessThan: 666).getDocuments();
+      var recipelist = querySnapshot.documents;
+
+    templist = collectionSnapshot.documents; // <--- ERROR
+
+    list = templist.map((DocumentSnapshot docSnapshot){
+      return docSnapshot.data['Name'];
+    }).toList();
+
+
+      print("TEST--------------------------");
+      print(list);
+      double threshold=.70;
+      List<String> filteredList= new List<String>();
+      List dummyList=["arugula", "Balsamic vinegar", "Watermelon"];
+      for(int x=0; x<recipelist.length; x++){
+        int counter=0;
+        double similarity=0;
+        for(int y=0; y<list.length;y++){
+          if(recipelist[x].data["ingredientName"].containsValue(list[y].toString().toLowerCase())){
+            print(recipelist[x].data["ingredientName"]);
+            print(list[y]);
+            print("MATCHES");
+            counter=counter+1;
+          }
+        }
+
+        //\b(\w*word\w*)\b
+        print(counter);
+        similarity= counter/recipelist[x].data["ingredientName"].length;
+        print(similarity);
+        if( similarity>=threshold){
+          filteredList.add(recipelist[x].documentID);
+        }
+        //print(recipelist[x].data['ingredientName']);
+        //print(recipelist[x].data['name']);
+        //print(recipelist[x].documentID);
+      }
+      print("FILTERED LIST----------------------");
+      print(filteredList);
+    Firestore.instance.collection('recipe').document(filteredList[0]).get().then((DocumentSnapshot document) {
+      print("document_build:$document");
+      print(document.data['name'].toString());
+      print(document.data['instructions'].values);
+    });
+
+  }
+
+*/
 }
+
 
 
 
