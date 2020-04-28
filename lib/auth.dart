@@ -20,9 +20,8 @@ class Auth implements BaseAuth{
     FirebaseUser user = (await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: password)).user;
     //Create a new document for the user with a uid
     await UserCollection(uid: user.uid).intializeProfile(
-        'username',
-        ['None'],
-        ['None']);
+        [],
+        'None');
     return user.uid;
   }
 
