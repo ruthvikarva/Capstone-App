@@ -8,6 +8,7 @@
 .buildlog/
 .history
 .svn/
+capstone-app-ece62-firebase-adminsdk-ub1cs-b67273ff40.json
 
 # IntelliJ related
 *.iml
@@ -35,3 +36,4 @@ lib/generated_plugin_registrant.dart
 
 # Exceptions to above rules.
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
+
