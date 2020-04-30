@@ -1,5 +1,7 @@
 import 'package:capstoneapp/home.dart';
-//import 'package:capstoneapp/home2.dart';
+import 'package:capstoneapp/home2.dart';
+import 'package:capstoneapp/home3.dart';
+import 'package:capstoneapp/recipe.dart';
 import 'package:flutter/material.dart';
 import 'login_page.dart';
 import 'auth.dart';
@@ -29,18 +31,17 @@ class _RootPageState extends State<RootPage> {
     });
   }
 
-  void _signedIn() {
+  void signedIn() {
     setState(() {
       authStatus = AuthStatus.signedIn;
     });
   }
 
-  void _signedOut() {
+  void signedOut() {
     setState(() {
       authStatus = AuthStatus.notSignedIn;
     });
   }
-
 
   @override
   // ignore: missing_return
@@ -49,12 +50,12 @@ class _RootPageState extends State<RootPage> {
       case AuthStatus.notSignedIn:
         return new LoginPage(
           auth: widget.auth,
-          onSignedIn: _signedIn,
+          onSignedIn: signedIn,
         );
       case AuthStatus.signedIn:
-        return new HomePage(
+        return new HomePage2(
           auth: widget.auth,
-          onSignedOut: _signedOut,
+          onSignedOut: signedOut,
         );
     }
   }

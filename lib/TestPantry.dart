@@ -1,9 +1,10 @@
 import 'package:capstoneapp/home.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'items.dart';
 
-class PantryPage extends StatelessWidget {
+class PantryPageTesting extends StatelessWidget {
   final db = Firestore.instance;
 
   @override
@@ -27,11 +28,34 @@ Future navigateToHome(context) async {
   Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
 }
 
+final db = Firestore.instance;
+String currentUser;
+bool alreadyExists;
+
 class _IngredientsPageState extends State<IngredientsPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   final TextEditingController _textEditingController = new TextEditingController();
 
   List<Item> items = [];
+
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _asyncMethod();
+    });
+    super.initState();
+  }
+
+  _asyncMethod() async {
+    FirebaseUser user = await FirebaseAuth.instance.currentUser();
+    String userId = user.uid;
+    {
+      setState(() {
+        currentUser = userId;
+      });
+    }
+  }
 
   _onAddItemPressed() {
     _scaffoldKey.currentState.showBottomSheet<Null>((BuildContext context) {
@@ -62,42 +86,55 @@ class _IngredientsPageState extends State<IngredientsPage> {
     }
   }
 
-  _onDeleteItemPressed(item) async {
-    final db = Firestore.instance;
-    //await db.collection('inventory').delete({'title': _textEditingController.text});
-    items.removeAt(item);
-    setState(() {});
-  }
-
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
       key: _scaffoldKey,
       appBar: new AppBar(
-        title: new Text('Pantryyy'),
+        title: new Text('Pantry'),
         leading: IconButton(icon: Icon(Icons.arrow_back_ios),
           onPressed: () {
             navigateToHome(context);
           },
         ),
       ),
-      body: new Container(
-        child: new ListView.builder(
-          itemCount: items.length,
-          itemBuilder: (context, index) {
-            return ListTile(
-              title: Text(
-                '${items[index].title}',
-              ),
-              trailing: new IconButton(
-                icon: new Icon(Icons.delete),
-                onPressed: () {
-                  _onDeleteItemPressed(index);
-                },
-              ),
-            );
-          },
-        ),
+      body: ListView(
+        padding: EdgeInsets.all(12.0),
+        children: <Widget>[
+          SizedBox(height: 0.0),
+          StreamBuilder<QuerySnapshot> (
+              stream: db.collection('inventory')
+                  .where("UserId", isEqualTo: currentUser)
+                  .snapshots(),
+              // ignore: missing_return
+              builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                if (snapshot.data != null) {
+                  return Column(
+                    children: snapshot.data.documents.map((doc) {
+                      return ListTile(
+                          title: Text(doc.data['Name']),
+                          subtitle: Text(doc.data['Quantity']),
+                          trailing: new IconButton(
+                              icon: new Icon(Icons.delete),
+                              onPressed: () async {
+                                await db
+                                    .collection('inventory')
+                                    .document(doc.documentID)
+                                    .delete();
+                              }
+                          )
+                      );
+                    }).toList(),
+                  );
+                }
+                else if (snapshot.hasError) {
+                  const Text('Data Error');
+                }
+                else {
+                  return SizedBox();
+                }
+              }),
+        ],
       ),
       floatingActionButton: new FloatingActionButton(
         onPressed: _onAddItemPressed,

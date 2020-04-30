@@ -22,6 +22,8 @@ class _LoginPageState extends State<LoginPage> {
 
   String _email;
   String _password;
+  String _name;
+  String _calGoal;
   FormType _formType = FormType.login;
 
   bool validateSafe(){
@@ -89,10 +91,56 @@ void validateAndSubmit() async{
 
   List<Widget> buildInputs(){
     return [new TextFormField(
-      decoration: new InputDecoration(labelText: 'Email'),
+      decoration: new InputDecoration(
+        labelText: 'Email',
+        prefixIcon: Icon(Icons.email),
+        enabledBorder: OutlineInputBorder(
+          borderSide: const BorderSide(color: Colors.blue, width: 2.0),
+          borderRadius: BorderRadius.circular(25.0),
+        ),
+        contentPadding: const EdgeInsets.all(20.0)
+      ),
       validator: (value) => value.isEmpty ? 'Email can\'t be empty' : null,
       onSaved: (value) => _email = value,
     ),
+      SizedBox(height: 10),
+      new TextFormField(
+        decoration: new InputDecoration(
+            labelText: 'Password',
+            prefixIcon: Icon(Icons.lock),
+            enabledBorder: OutlineInputBorder(
+              borderSide: const BorderSide(color: Colors.blue, width: 2.0),
+              borderRadius: BorderRadius.circular(25.0),
+            ),
+            contentPadding: const EdgeInsets.all(20.0)
+        ),
+        obscureText: true,
+        validator: (value) => value.isEmpty ? 'Password can\'t be empty' : null,
+        onSaved: (value) => _password = value,
+      ),
+    ];
+  }
+
+  List<Widget> buildCreateAccountInputs(){
+    return [
+      new TextFormField(
+        decoration: new InputDecoration(labelText: 'Name'),
+        validator: (value) => value.isEmpty ? 'Name can\'t be empty' : null,
+        onSaved: (value) => _name = value,
+      ),
+
+      new TextFormField(
+        decoration: new InputDecoration(labelText: 'Calorie Goal'),
+        validator: (value) => value.isEmpty ? 'Calorie Goal can\'t be empty' : null,
+        onSaved: (value) => _calGoal = value,
+      ),
+
+      new TextFormField(
+      decoration: new InputDecoration(labelText: 'Email'),
+      validator: (value) => value.isEmpty ? 'Email can\'t be empty' : null,
+      onSaved: (value) => _email = value,
+      ),
+
       new TextFormField(
         decoration: new InputDecoration(labelText: 'Password'),
         obscureText: true,

@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'edit_info.dart';
+import 'profile_edit.dart';
 import 'login_page.dart';
 
 // ignore: must_be_immutable
@@ -11,6 +11,7 @@ class AddDataToFireStore extends StatelessWidget {
   final db = Firestore.instance;
   String currentUser = "dK0URoDBtdQi8m4qFNQzulKe5062";
   String myName = "Ruthvik";
+  bool alreadyExists;
 
   someMethod() async {
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
@@ -21,7 +22,7 @@ class AddDataToFireStore extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
+    return new Scaffold (
       appBar: AppBar(title: Text("Add Data to Firestore")),
       body: ListView(
         padding: EdgeInsets.all(12.0),
@@ -48,6 +49,15 @@ class AddDataToFireStore extends StatelessWidget {
               onPressed: () async {
                 FirebaseUser user = await FirebaseAuth.instance.currentUser();
                 currentUser = user.uid;
+
+                //DocumentReference test = db.collection('inventory') as DocumentReference;
+
+                alreadyExists = (await db.collection('inventory').where('Name', isEqualTo: _controller)) as bool;
+                // ignore: unrelated_type_equality_checks
+                if(alreadyExists) {
+                  print('It does exist');
+                }
+
                 await db.collection('inventory').add({'Name': _controller.text,
                   'Quantity': _controller2.text,
                   'UserId': currentUser});
@@ -60,7 +70,7 @@ class AddDataToFireStore extends StatelessWidget {
           SizedBox(height: 20.0),
           StreamBuilder<QuerySnapshot> (
               stream: db.collection('inventory')
-                  .where("UserId", isEqualTo: someMethod())
+                  .where("UserId", isEqualTo: 'dK0URoDBtdQi8m4qFNQzulKe5062')
                   .snapshots(),
               builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
                 if (snapshot.hasData) {
