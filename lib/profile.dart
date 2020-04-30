@@ -1,12 +1,12 @@
 import 'package:capstoneapp/profile_aboutme.dart';
 import 'package:capstoneapp/profile_goals.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'profile_aboutme.dart';
+//import 'profile_aboutme.dart';
 
 class ProfilePage extends StatefulWidget{
-  ProfilePage({Key key}): super(key: key);
-
+  //ProfilePage({Key key}): super(key: key);
   @override
   State<StatefulWidget> createState() {
     return _ProfilePage();
@@ -15,23 +15,24 @@ class ProfilePage extends StatefulWidget{
 
 class _ProfilePage extends State<ProfilePage> {
   var userID;
-  Future<String> getUser() async {
+  void getUser() async {
     final FirebaseUser user = await FirebaseAuth.instance.currentUser();
-    String userID = user.uid;
-    return userID;
+    userID=user.uid;
+    setState(() {
+      userID=user.uid;
+    });
   }
+
   @override
   void initState(){
-    setState() {
-      userID = getUser();
-    }
+    super.initState();
+    getUser();
     print(userID);
   }
 
 
   Widget build(BuildContext context) {
     return Scaffold(
-
       body: DefaultTabController(
         length: 2,
         child: NestedScrollView(
@@ -56,12 +57,43 @@ class _ProfilePage extends State<ProfilePage> {
 
                         SizedBox(height: 8,),
 
-                        Text("Red Tomato", style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold
-                        ),
-                        ),
-
+                        StreamBuilder<DocumentSnapshot>(
+                          stream: Firestore.instance.collection("users").document(userID).snapshots(),
+                          builder: (BuildContext context, AsyncSnapshot snapshot){
+                            if(snapshot.hasError){
+                              return Text("Red Tomato",
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold
+                                )
+                              );
+                            }
+                            if(snapshot.connectionState==ConnectionState.waiting){
+                              return Text("Red Tomato",
+                                  style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold
+                                )
+                              );
+                            }
+                            if(snapshot.data==null){
+                              return Text("Red Tomato",
+                                  style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold
+                                  )
+                              );
+                            }
+                            else{
+                              var name=snapshot.data["name"];
+                              return Text(name,
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold
+                                )
+                              );
+                            }
+                          }),
                         Text("Member since 2020", style: TextStyle(
                           fontSize: 14,
                         ),
@@ -135,76 +167,6 @@ class _ProfilePage extends State<ProfilePage> {
 
         ),
       ),
-
-
-      /*
-      body: ListView(
-          children: <Widget>[
-            Container(
-              child:Padding(
-                padding: EdgeInsets.all(20.0) ,
-                child: Column(
-                  children: <Widget>[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        CircleAvatar(
-                          minRadius: 60,
-                          backgroundImage: AssetImage('images/circle-cropped (11).png'),
-                        ),
-                        SizedBox(height: 10,),
-                      ],
-                    ),
-                    SizedBox(height: 8,),
-                    Text("Red Tomato", style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold
-                    ),
-                    ),
-                    Text("Member since 2020", style: TextStyle(
-                      fontSize: 14,
-                    ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.black26,
-              ),
-              child:DefaultTabController(
-                length: 2,
-                initialIndex: 0,
-                child: Column(
-                  children: <Widget>[
-                    TabBar(
-                      tabs:[
-                        Tab(text:"ABOUT ME"),
-                        Tab(text:"GOALS")
-                      ],
-                    ),
-                    Container(
-                      height: 500,
-                      color: Colors.white,
-                      child: TabBarView(
-                        children: <Widget>[
-                          Container(
-                              child: ProfileAboutMe()
-                          ),
-                          Container(
-                            //child: ProfileGoals(),
-                          )
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ]
-      ),
-      */
     );
   }
 
@@ -240,4 +202,5 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
 }
 
 //https://medium.com/@diegoveloper/flutter-collapsing-toolbar-sliver-app-bar-14b858e87abe
+
 

@@ -53,9 +53,6 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Flutter Calendar'),
-      ),
       body: StreamBuilder<List<EventModel>>(
           stream: eventDBS.streamList(),
           builder: (context, snapshot) {
@@ -122,6 +119,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                     calendarController: _controller,
                   ),
+                  /*
                   ..._selectedEvents.map((event) => ListTile(
                     title: Text(event.title),
                     onTap: () {
@@ -133,6 +131,7 @@ class _HomePageState extends State<HomePage> {
                               )));*/
                     },
                   )),
+                  */
                 ],
               ),
             );

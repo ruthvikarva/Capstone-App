@@ -1,4 +1,4 @@
-
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'profile_edit.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -14,7 +14,8 @@ class _ProfileAboutMeState extends State<ProfileAboutMe> {
   //Variables sent to the EDIT INFO screen---------------
   String id;
   String name;
-  List<String> diet=new List(1); //will have to change to string also, we need calories
+  String diet;
+  var calories;
   var allergy;
   //-----------------------------------------------------
   //Variabes used for streambuilder
@@ -23,6 +24,7 @@ class _ProfileAboutMeState extends State<ProfileAboutMe> {
   var userName;
 
   void initState(){
+    super.initState();
     getUser();
     //test();
     //getCollection();
@@ -34,9 +36,16 @@ class _ProfileAboutMeState extends State<ProfileAboutMe> {
     print(id);
     return Scaffold(
       body: ListView(
+        scrollDirection: Axis.vertical,
+        shrinkWrap: true,
         children: <Widget>[
+          //Allergies
           ExpansionTile(
-            title: Text("Allergies"),
+            title: Text("Allergies",
+              style: TextStyle(
+                fontSize: 16
+              ),
+            ),
             children: <Widget>[
               new StreamBuilder(
                 stream: Firestore.instance
@@ -53,20 +62,57 @@ class _ProfileAboutMeState extends State<ProfileAboutMe> {
                   }
                   //var len=snapshot.data.documents[1]['allergies'].length;
                   //List<dynamic> m=snapshot.data.documents[1]['allergies'];
-                  return Column(
+                  if(len==0){
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
-                        Text('Result: ${snapshot.data['allergies']}'),
-                        //Text('${allergyTest[0]}'),
-                        //Text(len.toString())
-                        //Text(len.toString()),
-                        //Text(m[0])
-                      ]
-                  );
+                        ListTile(
+                          title: Text("You have not indicated any allergies."),
+                          contentPadding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 20.0),
+                        ),
+                      ],
+                    );
+                  }
+                  else{
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Padding(
+                          padding:EdgeInsets.symmetric(vertical: 0.0, horizontal: 20.0),
+                          child: Text("You have indicated having allergies of:",
+                            style: TextStyle(
+                              fontSize: 16
+                            ),
+                          ),
+                        ),
+                        ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: len,
+                          itemBuilder: (context, index){
+                            return ListTile(
+                              title: Text(allergies[index],
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w300,
+                                ),
+                              ),
+                              dense: true,
+                              leading: Icon(Icons.track_changes),
+                              contentPadding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 20.0),
+                            );
+                          },
+                        ),
+                      ],
+                    );
+                  }
 
                 },
               ),
             ],
           ),
+          //Diet
           ExpansionTile(
             title: Text("Diet"),
             children: <Widget>[
@@ -75,17 +121,46 @@ class _ProfileAboutMeState extends State<ProfileAboutMe> {
                     .collection('users').document(id).snapshots(),
                 builder: (context, snapshot){
                   if(!snapshot.hasData) return Text('Loading data..');
-                  var dietTest=snapshot.data['diet'];
-                  diets= new List(1);
-                  diets[0]=dietTest;
-                  //var len=snapshot.data.documents[1]['allergies'].length;
-                  //List<dynamic> m=snapshot.data.documents[1]['allergies'];
-                  return Column(
+                  diet=snapshot.data['diet'];
+                  if(diet=="None"){
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
-                        Text('Result: ${snapshot.data['diet']}'),
-                      ]
-                  );
+                        ListTile(
+                          title: Text("You have not indicated a specific diet."),
+                          contentPadding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 20.0),
+                        ),
+                      ],
+                    );
 
+                  }
+                  else{
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Padding(
+                          padding:EdgeInsets.symmetric(vertical: 0.0, horizontal: 20.0),
+                          child: Text("You have indicated practicing the following diet:",
+                            style: TextStyle(
+                              fontSize: 16,
+                            ),
+                          ),
+                        ),
+                        ListTile(
+                          leading: Icon(Icons.track_changes),
+                          title: Text(diet,
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w300,
+                            ),
+                          ),
+                          contentPadding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 20.0),
+                        )
+                      ],
+                    );
+                  }
 
                 },
               )
@@ -102,11 +177,25 @@ class _ProfileAboutMeState extends State<ProfileAboutMe> {
                   userName=snapshot.data['name'];
                   print(userName);
 
-                  //var len=snapshot.data.documents[1]['allergies'].length;
-                  //List<dynamic> m=snapshot.data.documents[1]['allergies'];
                   return Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text('Result: ${snapshot.data['name']}'),
+                        ListTile(
+                          title: Row(
+                            children: <Widget>[
+                              Text("Name: "),
+                              Text(userName,
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w300,
+                                ),
+                              )
+                            ],
+                          ),
+                          contentPadding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 20.0),
+                        )
+
                         //Text(userName),
                         //Text(len.toString()),
                         //Text(m[0])
@@ -116,29 +205,6 @@ class _ProfileAboutMeState extends State<ProfileAboutMe> {
 
                 },
               ),
-
-              /*
-              new StreamBuilder(
-                stream: Firestore.instance
-                    .collection('recipe').document(id).snapshots(),
-                builder: (context, snapshot){
-                  if(!snapshot.hasData) return Text('Loading data..');
-                  userName=snapshot.data['name'];
-                  print(userName);
-                  //var len=snapshot.data.documents[1]['allergies'].length;
-                  //List<dynamic> m=snapshot.data.documents[1]['allergies'];
-                  return Column(
-                      children: <Widget>[
-                        Text('Result: ${snapshot.data['name']}'),
-                        //Text(userName),
-                        //Text(len.toString()),
-                        //Text(m[0])
-                      ]
-                  );
-                },
-              )
-              */
-
 
             ],
           ),
@@ -157,7 +223,8 @@ class _ProfileAboutMeState extends State<ProfileAboutMe> {
                             userid: id,
                             curName: name,
                             curAllergies: allergy,
-                            curDiets: diet
+                            curDiet: diet,
+                            curCalories: calories,
                         )
                     )
                 );
@@ -182,12 +249,13 @@ class _ProfileAboutMeState extends State<ProfileAboutMe> {
       print("document_build:$document");
       setState(() {
         name=document.data['name'].toString();
-        diet[0]=document.data['diet'].toString(); //diet will have to change from an array to a string
+        diet=document.data['diet'].toString(); //diet will have to change from an array to a string
         allergy=document.data['allergies'];
+        calories=document.data["calories"];
       });
-      print(name);
-      print(diet);
-      print(allergy);
+      print("Name: $name");
+      print("Diet: $diet");
+      print("Allergy: $allergy");
     });
 
   }
@@ -204,6 +272,7 @@ class _ProfileAboutMeState extends State<ProfileAboutMe> {
       print(list[x].data['name']);
       print(list[x].documentID);
     }
+
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
     String userId = user.uid;
     QuerySnapshot qSnapshot = await Firestore.instance.collection("inventory")
@@ -213,8 +282,10 @@ class _ProfileAboutMeState extends State<ProfileAboutMe> {
     print(userId);
     print(ulist.runtimeType);
     print(ulist);
+
     //var map= list[].data['ingredientName'];
   }
+
     void getCollection() async{
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
     String userId = user.uid;
@@ -225,10 +296,14 @@ class _ProfileAboutMeState extends State<ProfileAboutMe> {
       QuerySnapshot querySnapshot = await Firestore.instance.collection("recipe")
           .where("calories", isLessThan: 666).getDocuments();
       var recipelist = querySnapshot.documents;
+
     templist = collectionSnapshot.documents; // <--- ERROR
+
     list = templist.map((DocumentSnapshot docSnapshot){
       return docSnapshot.data['Name'];
     }).toList();
+
+
       print("TEST--------------------------");
       print(list);
       double threshold=.70;
@@ -245,6 +320,7 @@ class _ProfileAboutMeState extends State<ProfileAboutMe> {
             counter=counter+1;
           }
         }
+
         //\b(\w*word\w*)\b
         print(counter);
         similarity= counter/recipelist[x].data["ingredientName"].length;
@@ -263,6 +339,13 @@ class _ProfileAboutMeState extends State<ProfileAboutMe> {
       print(document.data['name'].toString());
       print(document.data['instructions'].values);
     });
+
   }
+
 */
 }
+
+
+
+
+
