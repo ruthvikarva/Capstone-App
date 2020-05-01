@@ -1,5 +1,7 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class LoginPage extends StatefulWidget {
 
@@ -26,6 +28,9 @@ class _LoginPageState extends State<LoginPage> {
   String _calGoal;
   FormType _formType = FormType.login;
 
+  final db = Firestore.instance;
+
+
   bool validateSafe(){
     final form = formKey.currentState;
     if(form.validate()){
@@ -46,6 +51,9 @@ void validateAndSubmit() async{
       }
         else {
           String userId = await widget.auth.createUserWithEmailAndPassword(_email, _password);
+          
+          await db.collection('users').document(userId).updateData({"name": _name});
+          
           print('Signed in: $userId');
         }
         widget.onSignedIn();
@@ -80,75 +88,119 @@ void validateAndSubmit() async{
         padding: EdgeInsets.all(16.0),
         child: new Form(
           key: formKey,
-          child: new Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: buildInputs() + buildSubmitButtons()
-          ),
+          child: SingleChildScrollView(
+            child: new Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: buildInputs() + buildSubmitButtons()
+            ),
+          )
         )
       )
     );
   }
 
-  List<Widget> buildInputs(){
-    return [new TextFormField(
-      decoration: new InputDecoration(
-        labelText: 'Email',
-        prefixIcon: Icon(Icons.email),
-        enabledBorder: OutlineInputBorder(
-          borderSide: const BorderSide(color: Colors.blue, width: 2.0),
-          borderRadius: BorderRadius.circular(25.0),
-        ),
-        contentPadding: const EdgeInsets.all(20.0)
-      ),
-      validator: (value) => value.isEmpty ? 'Email can\'t be empty' : null,
-      onSaved: (value) => _email = value,
-    ),
-      SizedBox(height: 10),
-      new TextFormField(
+  List<Widget> buildInputs() {
+    if (_formType == FormType.login) {
+      return [new TextFormField(
         decoration: new InputDecoration(
-            labelText: 'Password',
-            prefixIcon: Icon(Icons.lock),
+            labelText: 'Email',
+            prefixIcon: Icon(Icons.email),
             enabledBorder: OutlineInputBorder(
               borderSide: const BorderSide(color: Colors.blue, width: 2.0),
               borderRadius: BorderRadius.circular(25.0),
             ),
             contentPadding: const EdgeInsets.all(20.0)
         ),
-        obscureText: true,
-        validator: (value) => value.isEmpty ? 'Password can\'t be empty' : null,
-        onSaved: (value) => _password = value,
+        validator: (value) => value.isEmpty ? 'Email can\'t be empty' : null,
+        onSaved: (value) => _email = value,
       ),
-    ];
+        SizedBox(height: 10),
+        new TextFormField(
+          decoration: new InputDecoration(
+              labelText: 'Password',
+              prefixIcon: Icon(Icons.lock),
+              enabledBorder: OutlineInputBorder(
+                borderSide: const BorderSide(color: Colors.blue, width: 2.0),
+                borderRadius: BorderRadius.circular(25.0),
+              ),
+              contentPadding: const EdgeInsets.all(20.0)
+          ),
+          obscureText: true,
+          validator: (value) =>
+          value.isEmpty
+              ? 'Password can\'t be empty'
+              : null,
+          onSaved: (value) => _password = value,
+        ),
+      ];
+    }
+
+    if (_formType == FormType.register) {
+      return [
+        new TextFormField(
+          decoration: new InputDecoration(
+            labelText: 'Name',
+            prefixIcon: Icon(Icons.person),
+            enabledBorder: OutlineInputBorder(
+              borderSide: const BorderSide(color: Colors.blue, width: 2.0),
+              borderRadius: BorderRadius.circular(25.0),
+            ),
+          ),
+          validator: (value) => value.isEmpty ? 'Name can\'t be empty' : null,
+          onSaved: (value) => _name = value,
+        ),
+        SizedBox(height: 10),
+        new TextFormField(
+          decoration: new InputDecoration(
+            labelText: 'Calorie Goal',
+            prefixIcon: Icon(Icons.fastfood),
+            enabledBorder: OutlineInputBorder(
+              borderSide: const BorderSide(color: Colors.blue, width: 2.0),
+              borderRadius: BorderRadius.circular(25.0),
+            ),
+          ),
+          validator: (value) =>
+          value.isEmpty
+              ? 'Calorie Goal can\'t be empty'
+              : null,
+          onSaved: (value) => _calGoal = value,
+        ),
+        SizedBox(height: 10),
+        new TextFormField(
+          decoration: new InputDecoration(
+              labelText: 'Email',
+              prefixIcon: Icon(Icons.email),
+              enabledBorder: OutlineInputBorder(
+                borderSide: const BorderSide(color: Colors.blue, width: 2.0),
+                borderRadius: BorderRadius.circular(25.0),
+              ),
+              contentPadding: const EdgeInsets.all(20.0)
+          ),
+          validator: (value) => value.isEmpty ? 'Email can\'t be empty' : null,
+          onSaved: (value) => _email = value,
+        ),
+        SizedBox(height: 10),
+        new TextFormField(
+          decoration: new InputDecoration(
+              labelText: 'Password',
+              prefixIcon: Icon(Icons.lock),
+              enabledBorder: OutlineInputBorder(
+                borderSide: const BorderSide(color: Colors.blue, width: 2.0),
+                borderRadius: BorderRadius.circular(25.0),
+              ),
+              contentPadding: const EdgeInsets.all(20.0)
+          ),
+          obscureText: true,
+          validator: (value) =>
+          value.isEmpty
+              ? 'Password can\'t be empty'
+              : null,
+          onSaved: (value) => _password = value,
+        ),
+      ];
+    }
   }
 
-  List<Widget> buildCreateAccountInputs(){
-    return [
-      new TextFormField(
-        decoration: new InputDecoration(labelText: 'Name'),
-        validator: (value) => value.isEmpty ? 'Name can\'t be empty' : null,
-        onSaved: (value) => _name = value,
-      ),
-
-      new TextFormField(
-        decoration: new InputDecoration(labelText: 'Calorie Goal'),
-        validator: (value) => value.isEmpty ? 'Calorie Goal can\'t be empty' : null,
-        onSaved: (value) => _calGoal = value,
-      ),
-
-      new TextFormField(
-      decoration: new InputDecoration(labelText: 'Email'),
-      validator: (value) => value.isEmpty ? 'Email can\'t be empty' : null,
-      onSaved: (value) => _email = value,
-      ),
-
-      new TextFormField(
-        decoration: new InputDecoration(labelText: 'Password'),
-        obscureText: true,
-        validator: (value) => value.isEmpty ? 'Password can\'t be empty' : null,
-        onSaved: (value) => _password = value,
-      ),
-    ];
-  }
 
   List<Widget> buildSubmitButtons(){
     if(_formType == FormType.login){
@@ -172,7 +224,14 @@ void validateAndSubmit() async{
       return [
         new RaisedButton(
           child: new Text('Create an Account', style: new TextStyle(fontSize: 20.0)),
-          onPressed: validateAndSubmit,
+          onPressed://() async {
+            // ignore: unnecessary_statements
+            validateAndSubmit,
+            //await db
+/*                .collection('users')
+                .add({'Name': _name,
+              'calories': _calGoal});
+          },*/
           color: Color.fromRGBO(30, 176, 254, 100),
           shape: RoundedRectangleBorder(
               borderRadius: new BorderRadius.circular(18.0),
