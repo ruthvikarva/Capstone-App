@@ -5,9 +5,8 @@ class UserCollection{
   UserCollection({this.uid});
   final users=Firestore.instance.collection("users");
 
-  Future intializeProfile(String name, List<String>allergy, List<String> diet ) async{
+  Future intializeProfile(List<String>allergy, String diet ) async{
     return await users.document(uid).setData({
-      'name': name,
       'allergies':allergy,
       'diet': diet
     });
