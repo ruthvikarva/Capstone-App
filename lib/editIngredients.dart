@@ -55,84 +55,46 @@ _onAdd(TextEditingController _controller, TextEditingController _controller2) as
   FirebaseUser user = await FirebaseAuth.instance.currentUser();
   String currentUser = user.uid;
 
+  int quantity = int.parse(_controller2.text);
 
   List<DocumentSnapshot> templist;
   List<dynamic> list = new List();
-  CollectionReference collectionRef = Firestore.instance.collection("inventory");
-  QuerySnapshot collectionSnapshot = await collectionRef.where("UserId", isEqualTo: currentUser).getDocuments();
+  List<dynamic> documentList = new List();
+  CollectionReference collectionRef = Firestore.instance.collection(
+      "inventory");
+  QuerySnapshot collectionSnapshot = await collectionRef.where(
+      "UserId", isEqualTo: currentUser).getDocuments();
 
   templist = collectionSnapshot.documents; // <--- ERROR
-  list = templist.map((DocumentSnapshot docSnapshot){
+  list = templist.map((DocumentSnapshot docSnapshot) {
     return docSnapshot.data['Name'];
   }).toList();
 
-  print(list);
-  print("TEST--------------------");
 
   String ingName = _controller.text;
-  int quant;
-  quant = int.parse(_controller2.text);
 
 
+  if(list.contains(ingName)){
+    //----------------------- UPDATE QUANTITY -----------------------//
+    QuerySnapshot qSnapshot = await Firestore.instance.collection("inventory")
+        .where("UserId", isEqualTo: currentUser)
+        .where("Name", isEqualTo: ingName)
+        .getDocuments();
 
-  for(int y=0; y<list.length;y++){
-    //RegExp exp = new RegExp("\b(\w*"+list[y]+"\w*)\b");
-    //print(list[y]);
-    if(ingName == list[y]){
-      QuerySnapshot qSnapshot = await Firestore.instance.collection("inventory")
-          .where("UserId", isEqualTo: currentUser)
-          .where("Name", isEqualTo: _controller.text)
-          .getDocuments();
-      var ulist = qSnapshot.documents;
-      print("TEST--------------------");
-      print(ulist);
+    documentList = qSnapshot.documents.map((DocumentSnapshot docSnapshot) {
+      return docSnapshot.documentID;
+    }).toList();
 
-      /*await db
-          .collection('inventory')
-          .where('UserId', isEqualTo: currentUser)
-          .where('Name', isEqualTo: _controller.text)
-          .updateData({'Quantity': FieldValue.increment(1.0)});*/
-    }
-      print('MATCHES');
+    await db.collection('inventory').document(documentList[0]).updateData(
+        {'Quantity': FieldValue.increment(quantity)});
   }
 
-
-  await db.collection('inventory').add({'Name': _controller.text,
-    'Quantity': _controller2.text,
-    'UserId': currentUser});
-  
-  DocumentSnapshot _currentDocument;
-
-  var yourRef = db.collection('inventory')
-      .where('UserId', isEqualTo: currentUser)
-      .where('name', isEqualTo: _controller);
-
-  if(yourRef != null){
-    //await db.collection('inventory').document(_currentDocument.documentID).updateData({'Name': "AM I Working"});
+  else{
+    //------------------ ADDS TO THE DATABASE ------------------//
+    await db.collection('inventory').add({'Name': _controller.text,
+      'Quantity': quantity,
+      'UserId': currentUser});
   }
-
-
-      //\b(\w*word\w*)\b
-
-
-
-  _controller.clear();
-  _controller2.clear();
-
-    }
-
-
-
-
-
-
-
-
-
-/*  if (s.isNotEmpty) {
-    items.add(Item(s));
-    _textEditingController.clear();
-    setState(() {});
-  }*/
-
-
+      _controller.clear();
+      _controller2.clear();
+}
