@@ -70,9 +70,7 @@ _onAdd(TextEditingController _controller, TextEditingController _controller2) as
     return docSnapshot.data['Name'];
   }).toList();
 
-
   String ingName = _controller.text;
-
 
   if(list.contains(ingName)){
     //----------------------- UPDATE QUANTITY -----------------------//

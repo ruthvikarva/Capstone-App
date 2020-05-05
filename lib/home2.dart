@@ -1,7 +1,9 @@
 import 'package:capstoneapp/auth.dart';
+import 'package:capstoneapp/event_creator.dart';
 import 'package:capstoneapp/letsSee.dart';
 import 'package:capstoneapp/profile.dart';
 import 'package:capstoneapp/recipe.dart';
+import 'package:capstoneapp/testCalendar.dart';
 import 'package:capstoneapp/testingDB.dart';
 import 'package:flutter/material.dart';
 import 'calendarpage.dart';
@@ -61,7 +63,7 @@ class _HomePageState extends State<HomePage2> {
           new FlatButton(
               onPressed: _signOut,
               //child: new Text('Logout', style: new TextStyle(fontSize: 17, color: Colors.white))
-              child: new Icon(Icons.power)
+              child: new Icon(Icons.exit_to_app)
           )
         ],
       ),

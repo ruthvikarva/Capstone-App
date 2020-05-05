@@ -25,7 +25,7 @@ class _LoginPageState extends State<LoginPage> {
   String _email;
   String _password;
   String _name;
-  String _calGoal;
+  int _calGoal;
   FormType _formType = FormType.login;
 
   final db = Firestore.instance;
@@ -52,7 +52,7 @@ void validateAndSubmit() async{
         else {
           String userId = await widget.auth.createUserWithEmailAndPassword(_email, _password);
           
-          await db.collection('users').document(userId).updateData({"name": _name});
+          await db.collection('users').document(userId).updateData({"name": _name, "calories": _calGoal});
           
           print('Signed in: $userId');
         }
@@ -153,7 +153,7 @@ void validateAndSubmit() async{
         new TextFormField(
           decoration: new InputDecoration(
             labelText: 'Calorie Goal',
-            prefixIcon: Icon(Icons.fastfood),
+            prefixIcon: Icon(Icons.favorite),
             enabledBorder: OutlineInputBorder(
               borderSide: const BorderSide(color: Colors.blue, width: 2.0),
               borderRadius: BorderRadius.circular(25.0),
@@ -163,7 +163,7 @@ void validateAndSubmit() async{
           value.isEmpty
               ? 'Calorie Goal can\'t be empty'
               : null,
-          onSaved: (value) => _calGoal = value,
+          onSaved: (value) => _calGoal = int.parse(value),
         ),
         SizedBox(height: 10),
         new TextFormField(
@@ -227,11 +227,6 @@ void validateAndSubmit() async{
           onPressed://() async {
             // ignore: unnecessary_statements
             validateAndSubmit,
-            //await db
-/*                .collection('users')
-                .add({'Name': _name,
-              'calories': _calGoal});
-          },*/
           color: Color.fromRGBO(30, 176, 254, 100),
           shape: RoundedRectangleBorder(
               borderRadius: new BorderRadius.circular(18.0),

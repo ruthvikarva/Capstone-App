@@ -34,4 +34,3 @@ class Auth implements BaseAuth{
     await FirebaseAuth.instance.signOut();
   }
 }
-

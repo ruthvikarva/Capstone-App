@@ -1,6 +1,5 @@
 import 'package:capstoneapp/auth.dart';
 import 'package:flutter/material.dart';
-import 'login_page.dart';
 import 'auth.dart';
 import 'root.dart';
 

@@ -43,6 +43,7 @@ class _PantryPageState extends State<AddIng>{
             StreamBuilder<QuerySnapshot> (
                 stream: db.collection('inventory')
                     .where("UserId", isEqualTo: currentUser)
+                    //.where('time', isLessThanOrEqualTo: DateTime.now().millisecondsSinceEpoch)
                     .snapshots(),
                 builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
                   if (snapshot.hasData) {
@@ -50,7 +51,7 @@ class _PantryPageState extends State<AddIng>{
                       children: snapshot.data.documents.map((doc) {
                         return ListTile(
                             title: Text(doc.data['Name']),
-                            subtitle: Text(doc.data['Quantity']),
+                            subtitle: Text(doc.data['Quantity'].toString()),
                             trailing: new IconButton(
                                 icon: new Icon(Icons.delete),
                                 onPressed: () async {

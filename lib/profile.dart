@@ -58,42 +58,42 @@ class _ProfilePage extends State<ProfilePage> {
                         SizedBox(height: 8,),
 
                         StreamBuilder<DocumentSnapshot>(
-                          stream: Firestore.instance.collection("users").document(userID).snapshots(),
-                          builder: (BuildContext context, AsyncSnapshot snapshot){
-                            if(snapshot.hasError){
-                              return Text("Red Tomato",
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold
-                                )
-                              );
-                            }
-                            if(snapshot.connectionState==ConnectionState.waiting){
-                              return Text("Red Tomato",
-                                  style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold
-                                )
-                              );
-                            }
-                            if(snapshot.data==null){
-                              return Text("Red Tomato",
-                                  style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold
-                                  )
-                              );
-                            }
-                            else{
-                              var name=snapshot.data["name"];
-                              return Text(name,
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold
-                                )
-                              );
-                            }
-                          }),
+                            stream: Firestore.instance.collection("users").document(userID).snapshots(),
+                            builder: (BuildContext context, AsyncSnapshot snapshot){
+                              if(snapshot.hasError){
+                                return Text("Red Tomato",
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold
+                                    )
+                                );
+                              }
+                              if(snapshot.connectionState==ConnectionState.waiting){
+                                return Text("Red Tomato",
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold
+                                    )
+                                );
+                              }
+                              if(snapshot.data==null){
+                                return Text("Red Tomato",
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold
+                                    )
+                                );
+                              }
+                              else{
+                                var name=snapshot.data["name"];
+                                return Text(name,
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold
+                                    )
+                                );
+                              }
+                            }),
                         Text("Member since 2020", style: TextStyle(
                           fontSize: 14,
                         ),
@@ -202,5 +202,3 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
 }
 
 //https://medium.com/@diegoveloper/flutter-collapsing-toolbar-sliver-app-bar-14b858e87abe
-
-
