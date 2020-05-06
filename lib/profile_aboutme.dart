@@ -33,7 +33,7 @@ class _ProfileAboutMeState extends State<ProfileAboutMe> {
 
   @override
   Widget build(BuildContext context) {
-    print(id);
+    print("Allergies: $allergy");
     return Scaffold(
       body: ListView(
         scrollDirection: Axis.vertical,
@@ -190,15 +190,24 @@ class _ProfileAboutMeState extends State<ProfileAboutMe> {
                                   fontSize: 14,
                                   fontWeight: FontWeight.w300,
                                 ),
-                              )
+                              ),
                             ],
                           ),
                           contentPadding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 20.0),
+                        ),
+                        ListTile(
+                            title: Row(
+                              children: <Widget>[
+                                Text("Calorie Goal: "),
+                                Text(calories.toString(),
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w300
+                                  ),
+                                )
+                              ],
+                            )
                         )
-
-                        //Text(userName),
-                        //Text(len.toString()),
-                        //Text(m[0])
                       ]
                   );
 
@@ -272,6 +281,7 @@ class _ProfileAboutMeState extends State<ProfileAboutMe> {
       print(list[x].data['name']);
       print(list[x].documentID);
     }
+
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
     String userId = user.uid;
     QuerySnapshot qSnapshot = await Firestore.instance.collection("inventory")
@@ -281,8 +291,10 @@ class _ProfileAboutMeState extends State<ProfileAboutMe> {
     print(userId);
     print(ulist.runtimeType);
     print(ulist);
+
     //var map= list[].data['ingredientName'];
   }
+
     void getCollection() async{
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
     String userId = user.uid;
@@ -293,10 +305,14 @@ class _ProfileAboutMeState extends State<ProfileAboutMe> {
       QuerySnapshot querySnapshot = await Firestore.instance.collection("recipe")
           .where("calories", isLessThan: 666).getDocuments();
       var recipelist = querySnapshot.documents;
+
     templist = collectionSnapshot.documents; // <--- ERROR
+
     list = templist.map((DocumentSnapshot docSnapshot){
       return docSnapshot.data['Name'];
     }).toList();
+
+
       print("TEST--------------------------");
       print(list);
       double threshold=.70;
@@ -313,6 +329,7 @@ class _ProfileAboutMeState extends State<ProfileAboutMe> {
             counter=counter+1;
           }
         }
+
         //\b(\w*word\w*)\b
         print(counter);
         similarity= counter/recipelist[x].data["ingredientName"].length;
@@ -331,8 +348,8 @@ class _ProfileAboutMeState extends State<ProfileAboutMe> {
       print(document.data['name'].toString());
       print(document.data['instructions'].values);
     });
+
   }
+
 */
 }
-
-

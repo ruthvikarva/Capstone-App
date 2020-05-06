@@ -3,7 +3,6 @@ import 'package:capstoneapp/profile_goals.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-//import 'profile_aboutme.dart';
 
 class ProfilePage extends StatefulWidget{
   //ProfilePage({Key key}): super(key: key);
@@ -107,9 +106,8 @@ class _ProfilePage extends State<ProfilePage> {
               SliverPersistentHeader(
                 delegate: _SliverAppBarDelegate(
                   TabBar(
-
                     labelColor: Colors.black87,
-                    unselectedLabelColor: Colors.grey,
+                    unselectedLabelColor: Colors.white,
                     tabs: [
                       Tab(
                         child: Row(
@@ -189,7 +187,7 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     return new Container(
       child: _bar,
-      color: Colors.blueGrey,
+      color: Colors.blue,
       height: 100,
     );
   }
@@ -200,5 +198,4 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   }
 
 }
-
 //https://medium.com/@diegoveloper/flutter-collapsing-toolbar-sliver-app-bar-14b858e87abe

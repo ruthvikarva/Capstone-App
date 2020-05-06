@@ -13,7 +13,8 @@ class MyApp extends StatelessWidget {
     return new MaterialApp(
       title: 'Meal App Login',
       theme: new ThemeData(
-        primarySwatch: Colors.blue
+        primarySwatch: Colors.blue,
+        brightness: Brightness.light
       ),
       home: new RootPage(auth: new Auth())
     );

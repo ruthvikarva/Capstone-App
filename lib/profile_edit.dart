@@ -1,4 +1,4 @@
-import 'package:capstoneapp/home.dart';
+
 import 'package:capstoneapp/home2.dart';
 import 'package:capstoneapp/profile.dart';
 import 'package:capstoneapp/testingDB.dart';
@@ -95,6 +95,7 @@ class _ProfileEditState extends State<ProfileEdit> {
         .document(id)
         .updateData(data);
   }
+
 
   Widget _buildName(){
     return FormBuilderTextField(
@@ -253,13 +254,14 @@ class _ProfileEditState extends State<ProfileEdit> {
                         updateNumber({"calories": newCalories});
                       }
 
-
+                      Navigator.pop(context);
+                      /*
                       Navigator.push((context),
                           MaterialPageRoute(
-                              builder: (context)=>HomePage2(),
+                              builder: (context)=>HomePage2()
                           )
                       );
-
+                      */
 
                     }
                   },

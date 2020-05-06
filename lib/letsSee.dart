@@ -75,8 +75,8 @@ class _PantryPageState extends State<AddIng>{
           ],
         ),
         floatingActionButton: FloatingActionButton.extended(
-          icon: Icon(Icons.edit),
-          label: Text("Edit"),
+          icon: Icon(Icons.add),
+          label: Text("Add"),
           backgroundColor: Colors.redAccent,
           onPressed: (){
             Navigator.push(context,

@@ -81,9 +81,9 @@ void validateAndSubmit() async{
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      appBar: new AppBar(
+/*      appBar: new AppBar(
         title: new Text('Capstone App'),
-      ),
+      ),*/
       body: new Container(
         padding: EdgeInsets.all(16.0),
         child: new Form(
@@ -91,7 +91,7 @@ void validateAndSubmit() async{
           child: SingleChildScrollView(
             child: new Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: buildInputs() + buildSubmitButtons()
+              children: buildInputs() + buildSubmitButtons(),
             ),
           )
         )
@@ -100,8 +100,18 @@ void validateAndSubmit() async{
   }
 
   List<Widget> buildInputs() {
+
     if (_formType == FormType.login) {
-      return [new TextFormField(
+      return [
+        SizedBox(height: 100),
+        Text ('Mealios',
+            style: TextStyle(
+                color: Colors.black, fontWeight: FontWeight.bold,fontSize: 40
+            ),
+          textAlign: TextAlign.center,
+        ),
+        SizedBox(height: 100),
+        new TextFormField(
         decoration: new InputDecoration(
             labelText: 'Email',
             prefixIcon: Icon(Icons.email),
@@ -137,6 +147,7 @@ void validateAndSubmit() async{
 
     if (_formType == FormType.register) {
       return [
+        SizedBox(height: 50),
         new TextFormField(
           decoration: new InputDecoration(
             labelText: 'Name',
@@ -206,7 +217,7 @@ void validateAndSubmit() async{
     if(_formType == FormType.login){
       return [
         new RaisedButton(
-          child: new Text('Login', style: new TextStyle(fontSize: 20.0)),
+          child: new Text('Sign In', style: new TextStyle(fontSize: 20.0)),
           onPressed: validateAndSubmit,
           color: Color.fromRGBO(30, 176, 254, 100),
           shape: RoundedRectangleBorder(
@@ -223,7 +234,7 @@ void validateAndSubmit() async{
     else{
       return [
         new RaisedButton(
-          child: new Text('Create an Account', style: new TextStyle(fontSize: 20.0)),
+          child: new Text('Sign Up', style: new TextStyle(fontSize: 20.0)),
           onPressed://() async {
             // ignore: unnecessary_statements
             validateAndSubmit,
@@ -234,7 +245,7 @@ void validateAndSubmit() async{
           ),
         ),
         new FlatButton(
-          child: new Text('Have an account? Login', style: new TextStyle(fontSize: 15.0)),
+          child: new Text('Have an account? Sign In', style: new TextStyle(fontSize: 15.0)),
           onPressed: moveToLogin,
         )
       ];

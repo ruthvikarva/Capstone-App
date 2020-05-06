@@ -1,13 +1,10 @@
 import 'package:capstoneapp/auth.dart';
-import 'package:capstoneapp/event_creator.dart';
+import 'package:capstoneapp/history.dart';
 import 'package:capstoneapp/letsSee.dart';
 import 'package:capstoneapp/profile.dart';
 import 'package:capstoneapp/recipe.dart';
-import 'package:capstoneapp/testCalendar.dart';
-import 'package:capstoneapp/testingDB.dart';
 import 'package:flutter/material.dart';
-import 'calendarpage.dart';
-import 'pantry.dart';
+
 
 class HomePage2 extends StatefulWidget {
   HomePage2({this.auth, this.onSignedOut});
@@ -40,7 +37,7 @@ class _HomePageState extends State<HomePage2> {
     ProfilePage(),
     Recipe(),
     AddIng(),
-    CalendarPage(),
+    History(),
   ];
 
 
@@ -56,7 +53,7 @@ class _HomePageState extends State<HomePage2> {
           else if(_selectedPage == 2)
             return "Pantry";
           else if(_selectedPage == 3)
-            return "Calendar";
+            return "History";
           return "Hello";
         }()),
         actions: <Widget>[
@@ -95,7 +92,7 @@ class _HomePageState extends State<HomePage2> {
           ),
           BottomNavigationBarItem(
               icon:  Icon(Icons.calendar_today),
-              title: Text("Calendar")
+              title: Text("History")
           ),
         ],
       ),

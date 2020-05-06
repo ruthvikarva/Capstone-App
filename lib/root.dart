@@ -1,4 +1,4 @@
-import 'package:capstoneapp/home.dart';
+
 import 'package:capstoneapp/home2.dart';
 import 'package:capstoneapp/recipe.dart';
 import 'package:flutter/material.dart';
